@@ -6,18 +6,18 @@ api_routes = APIRouter()
 
 detector = tf.saved_model.load('./export/saved_model')
 
-def detect_objects(path:str, model) -> dict:
+def detect_objects(img, model) -> dict:
   """Fungsi mengekstrak gambar dari file, menambahkan sumbu baru
      dan meneruskan gambar melalui model deteksi objek.
      : jalur param: Jalur file
      :param model: Model deteksi objek
      : kembali: Kamus keluaran model
      """
-  image_tensor = tf.image.decode_jpeg(tf.io.read_file(path), channels= 3)[tf.newaxis, ...]
+  image_tensor = tf.image.decode_jpeg(img, channels= 3)[tf.newaxis, ...]
   return model(image_tensor)
 
 
-def count_persons(path: str, model, threshold=0) -> int:
+def count_persons(path, model, threshold=0) -> int:
   """Fungsi menghitung jumlah orang dalam sebuah gambar
      memproses output "detection_classes" dari model
      dan dengan mempertimbangkan ambang kepercayaan.
@@ -42,9 +42,7 @@ async def predict(
     file: UploadFile = File(...)
 ):
     contents = await file.read()
-    with open(file.filename, "wb") as f:
-        f.write(contents)
-    x = count_persons(file.filename, detector, threshold=0.4)
+    x = count_persons(contents, detector, threshold=0.4)
     return {"estimate": x.tolist()}
 
 
