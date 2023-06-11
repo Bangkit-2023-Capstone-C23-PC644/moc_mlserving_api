@@ -34,7 +34,7 @@ def count_persons(path: str, model, threshold=0) -> int:
       np.where(results['detection_scores'].numpy()[0] > threshold)].sum()
 
 
-@api_routes.get('/hello')
+@api_routes.get('/ping')
 async def ping():
     return "hello"
 
