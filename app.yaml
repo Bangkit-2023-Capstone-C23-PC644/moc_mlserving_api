@@ -13,5 +13,5 @@ instance_class: F1
 # Configure gunicorn worker count via --workers arg based on the App Engine instance class
 #   e.g. Set workers = 1 for F1 instance class, workers = 2 for F2, and workers = 4 for F4
 # See https://cloud.google.com/appengine/docs/standard/python3/runtime#application_startup
-entrypoint: gunicorn --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind :$PORT app.main:application
+entrypoint: gunicorn --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind :8080 app.main:application
 service: mocml1
